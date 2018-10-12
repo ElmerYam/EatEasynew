@@ -34,7 +34,7 @@ public class SignIn extends AppCompatActivity {
         edtPhone = (MaterialEditText)findViewById(R.id.edtPhone);
         btnSingIn = (Button)findViewById(R.id.btnSingIn);
 
-        //iniciar firebase
+        //iniciar firebase ellll
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference table_user = database.getReference("user");
 
