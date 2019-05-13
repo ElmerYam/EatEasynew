@@ -1,5 +1,6 @@
 package app.elmeryam.com.eateasy;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,6 +36,8 @@ public class Home extends AppCompatActivity
     TextView txtFullName;
     RecyclerView recycler_menu;
     RecyclerView.LayoutManager  layoutManager;
+
+    FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +54,8 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent cartIntent = new Intent(Home.this, Cart.class);
+                startActivity(cartIntent);
             }
         });
 
@@ -81,7 +84,7 @@ public class Home extends AppCompatActivity
     }
 
     private void loadMenu() {
-        FirebaseRecyclerAdapter<Category,MenuViewHolder> adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class,R.layout.menu_item,MenuViewHolder.class,category) {
+            adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class,R.layout.menu_item,MenuViewHolder.class,category) {
             @Override
             protected void populateViewHolder(MenuViewHolder viewHolder, Category model, int position) {
 
@@ -94,7 +97,11 @@ public class Home extends AppCompatActivity
                 viewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(Home.this,"" + clikItem.getName(), Toast.LENGTH_SHORT).show();
+                        //obtener el id de la categoria y enviar a un nuevo activity
+                        Intent foodList = new Intent(Home.this,FoodList.class);
+                        //porque CategoryID es el key , entonces solo entonces solo obternemos la llave de este item
+                        foodList.putExtra("CategoryId",adapter.getRef(position).getKey());
+                        startActivity(foodList);
                     }
                 });
             }
@@ -134,11 +141,24 @@ public class Home extends AppCompatActivity
 
         if (id == R.id.nav_menu) {
             // Handle the camera action
+
         } else if (id == R.id.nav_cart) {
+
+            Intent cartIntent = new Intent(Home.this,Cart.class);
+            startActivity(cartIntent);
 
         } else if (id == R.id.nav_orders) {
 
+            //mi codigo
+            Intent orderIntent = new Intent(Home.this,OrderStatus.class);
+            startActivity(orderIntent);
+
         } else if (id == R.id.nav_log_out) {
+
+            //mi codigo
+            Intent singIn = new Intent(Home.this,SignIn.class);
+            singIn.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(singIn);
 
         }
 
